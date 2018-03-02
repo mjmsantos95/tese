@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	
+	<meta charset="UTF-8">
+	<link href="CSS.css" rel="stylesheet" type="text/css">
+	<script src="S1.js"></script>
+	<title>Ontology Translation</title>
+
+	
+	</head>
+		
+	<body>
+			
+		<header>
+
+			<h1>Ontology Translation Service</h1>
+			<p>	This is a demonstration application of rule-based maps. The user can enter a term referring to a patient's problem or even a code from a chosen clinical coding language, and then it will be translated to another clinical language code.</p>
+
+		</header>
+
+		<div class="tab">
+		    <button class="tablinks active" onclick="openTab(event, 'by_term')">By Term</button>
+		    <button class="tablinks" onclick="openTab(event, 'by_code')">By Code</button>
+		</div>
+			
+
+		<div id="by_term" class="tabcontent" style="display:block">
+	  		
+	  		<form action="/term/?" method="GET" id="search" autocomplete="on" target="_blank">
+	  			<label for="name"><h3> Insert Term:</h3></label>
+	  			<input type="text" name="name" id="name" list="hist" placeholder="Search Term" style="width:100%; height:35px; font-size:20px;" required="on">
+	  			<br><br>
+	  			<div class="row">
+  					<div class="column left">
+			  			<label for="conversion"><h3> Select the translation:</h3></label>
+			  			<select name="conversion" id="conversion" style="width:20%; height:35px; font-size:15px">
+			  				<option value="ICD10toICD9">ICD10 to ICD9</option>
+							<option value="ICD9toICD10">ICD9 to ICD10</option>
+							<option value="SCTtoICD10">SCT to ICD10</option>
+							<option value="SCTtoICD9">SCT to ICD9</option>
+							<option value="ICD9toSCT">ICD9 to SCT</option>
+			  			</select>
+			  			<br><br>
+			  			<input type="Submit" value="Submit" onclick="save()"/>
+	  				</div>
+	  				<div clas="column right">
+	  				<br><br>
+	  					<select multiple="multiple" id="history" size="3" style="color:#696969;" onchange="func();"> 
+	  						<option style="color:black;" value="" disabled>Choose from last entries</option>
+	  					</select>
+	  				</div>
+	  			</div>
+
+
+			</form>
+
+
+		</div>
+
+		<div id="by_code" class="tabcontent" >
+	  		<form action="/code/?" method="GET" id="search" autocomplete="on" target="_blank">
+	  			<label for="input"><h3> Insert Code:</h3></label>
+	  			<input type="text" name="input" id="input" placeholder="Search Code" style="width:100%; height:35px; font-size:20px;" required="on"><br><br>
+				<div class="row">
+  					<div class="column left">
+			  			<label for="conversion_c"><h3> Select the translation:</h3></label>
+						<select name="conversion" id="conversion_c" style="width:20%; height:35px; font-size:15px">
+							<option value="ICD10toICD9">ICD10 to ICD9</option>
+							<option value="ICD9toICD10">ICD9 to ICD10</option>
+							<option value="SCTtoICD10">SCT to ICD10</option>
+							<option value="SCTtoICD9">SCT to ICD9</option>
+							<option value="ICD9toSCT">ICD9 to SCT</option>
+						</select>
+						<br><br>
+			  					<input type="submit" value="Submit" onclick="save_c()">
+	  				</div>
+				<div clas="column right">
+				<br><br>
+	  					<select multiple id="history_c" size="3" style="color:#696969;" onchange="func_c();">
+	  						<option style="color:black;" value="" disabled>Choose from last entries</option></select>
+	  						
+	  				</div>
+			</form>
+		</div>
+
+
+		<script>
+		
+
+			
+
+			function openTab(evt, convtype) {
+			    var i, tabcontent, tablinks;
+			    tabcontent = document.getElementsByClassName("tabcontent");
+			    for (i = 0; i < tabcontent.length; i++) {
+			        tabcontent[i].style.display = "none";
+			    }
+			    tablinks = document.getElementsByClassName("tablinks");
+			    for (i = 0; i < tablinks.length; i++) {
+			        tablinks[i].className = tablinks[i].className.replace("active", "");
+			    }
+			    document.getElementById(convtype).style.display = "block";
+			    evt.currentTarget.className += " active";
+			}
+
+			function save(){
+				var option = document.createElement("option");
+				option.text = document.getElementById("name").value;
+				option.value = document.getElementById("conversion").value;
+				var select = document.getElementById("history");
+				select.appendChild(option);
+			}
+
+			function save_c(){
+				var option = document.createElement("option");
+				option.text = document.getElementById("input").value;
+				option.value = document.getElementById("conversion_c").value;
+				var select = document.getElementById("history_c");
+				select.appendChild(option);
+			}
+
+
+			 function func() {
+    			var history = document.getElementById("history");
+    			var name = history.options[history.selectedIndex].text;
+    			document.getElementById("name").value=name;
+    			
+    			var history_conv = document.getElementById("history");
+    			var conv = history_conv.options[history_conv.selectedIndex].value;
+    			document.getElementById("conversion").value=conv;
+    			
+   			}
+
+    		function func_c() {
+    			var history_c = document.getElementById("history_c");
+    			var input = history_c.options[history_c.selectedIndex].text;
+    			document.getElementById("input").value=input;
+
+    			var history_conv1 = document.getElementById("history_c");
+    			var conv1 = history_conv1.options[history_conv1.selectedIndex].value;
+    			document.getElementById("conversion_c").value=conv1;
+   			}
+
+		</script>
+
+	</body>
+</html>
